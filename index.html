@@ -75,4 +75,88 @@
     <button onclick="calculateEnergy()">Decode My Energy</button>
 
     <div id="result">
-        <div class="description" style="
+        <div class="description" style="margin-bottom: 5px;">Your Core Identity:</div>
+        <div id="daymasterName" class="energy-tag"></div>
+        <div id="shiftedNote" class="shifted-note"></div>
+        <div id="energyMotto" class="description"></div>
+        <div style="margin-top: 1.5rem; background: #f0f0f0; padding: 1.2rem; border-radius: 12px; border: 1px solid #ccc;">
+            <p class="footer-info">🧐 <b>Curious about what this means?</b><br>Follow for daily energy tips! 😊</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculateEnergy() {
+        try {
+            const dateInput = document.getElementById('birthDate').value;
+            if (!dateInput) return alert('Please select your birth date.');
+
+            const parts = dateInput.split('-');
+            let year = parseInt(parts[0]);
+            let month = parseInt(parts[1]);
+            let day = parseInt(parts[2]);
+
+            const hourVal = document.getElementById('birthHour').value;
+            const minVal = document.getElementById('birthMinute').value;
+
+            let shifted = false;
+
+            if (hourVal !== '' && minVal !== '') {
+                const hour = parseInt(hourVal);
+                const minute = parseInt(minVal);
+                const totalMinutes = hour * 60 + minute;
+
+                if (totalMinutes >= 23 * 60 + 30) {
+                    const dateObj = new Date(year, month - 1, day);
+                    dateObj.setDate(dateObj.getDate() + 1);
+                    year = dateObj.getFullYear();
+                    month = dateObj.getMonth() + 1;
+                    day = dateObj.getDate();
+                    shifted = true;
+                }
+            }
+
+            const solar = Solar.fromYmd(year, month, day);
+            const lunar = solar.getLunar();
+            const dayGan = lunar.getDayGan();
+
+            const TRANSLATION = {
+                '甲': 'Yang Wood 🌲', '乙': 'Yin Wood 🌱',
+                '丙': 'Yang Fire 🔥', '丁': 'Yin Fire 🕯️',
+                '戊': 'Yang Earth ⛰️', '己': 'Yin Earth 🪴',
+                '庚': 'Yang Metal 🪨', '辛': 'Yin Metal 💎',
+                '壬': 'Yang Water 🌊', '癸': 'Yin Water 💧'
+            };
+
+            const MOTTOS = {
+                'Wood': 'Growth, Creativity, and Infinite Potential.',
+                'Fire': 'Passion, Transformation, and Radiance.',
+                'Earth': 'Stability, Grounding, and Nurturing.',
+                'Metal': 'Precision, Resilience, and Clarity.',
+                'Water': 'Wisdom, Flow, and Intuition.'
+            };
+
+            const resultName = TRANSLATION[dayGan];
+            const element = resultName.split(' ')[1];
+
+            document.getElementById('daymasterName').innerText = resultName;
+            document.getElementById('energyMotto').innerText = MOTTOS[element];
+
+            const noteEl = document.getElementById('shiftedNote');
+            if (shifted) {
+                noteEl.innerText = `⏱ Born after 23:30 → Calculated as ${year}.${String(month).padStart(2,'0')}.${String(day).padStart(2,'0')}`;
+            } else {
+                noteEl.innerText = '';
+            }
+
+            document.getElementById('result').style.display = 'block';
+
+        } catch (e) {
+            console.error(e);
+            alert("Something went wrong. Please try again!");
+        }
+    }
+</script>
+
+</body>
+</html>
