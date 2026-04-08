@@ -9,46 +9,18 @@
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Cormorant Garamond', serif; background-color: #0d1b2a; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding: 20px 16px; }
-        .container { background: white; padding: 2rem 1.8rem; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); width: 100%; max-width: 420px; text-align: center; overflow: hidden; }
+        .container { background: white; padding: 2rem 1.8rem; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); width: 100%; max-width: 420px; text-align: center; }
         h1 { font-size: 2rem; color: #111; margin: 0 0 0.6rem; letter-spacing: -0.5px; font-weight: 700; }
         .subtitle { font-size: 1rem; color: #777; margin-bottom: 1.8rem; line-height: 1.5; }
         .input-label { font-size: 0.95rem; color: #555; text-align: left; margin-bottom: 6px; padding-left: 2px; font-weight: 600; }
-        input[type="date"] {
-            display: block;
-            width: 100%;
-            min-width: 0;
-            padding: 14px 16px;
-            border: 1.5px solid #ddd;
-            border-radius: 12px;
-            margin-bottom: 1.4rem;
-            font-size: 1.1rem;
-            font-family: inherit;
-            outline: none;
-            transition: 0.3s;
-            color: #222;
-            background: white;
-            -webkit-appearance: auto;
-            appearance: auto;
-        }
-        input[type="date"]:focus { border-color: #c89b5a; box-shadow: 0 0 0 3px rgba(200,155,90,0.15); }
+        .date-row { display: flex; gap: 8px; margin-bottom: 1.4rem; }
+        .date-row select { flex: 1; min-width: 0; padding: 14px 6px; border: 1.5px solid #ddd; border-radius: 12px; font-size: 1rem; font-family: inherit; outline: none; transition: 0.3s; background: white; color: #222; -webkit-appearance: none; appearance: none; text-align: center; }
+        .date-row select:focus { border-color: #c89b5a; box-shadow: 0 0 0 3px rgba(200,155,90,0.15); }
         .time-row { display: flex; gap: 10px; margin-bottom: 1.4rem; align-items: center; }
-        .time-row select { flex: 1; min-width: 0; padding: 14px 10px; border: 1.5px solid #ddd; border-radius: 12px; font-size: 1.1rem; font-family: inherit; outline: none; transition: 0.3s; background: white; color: #222; -webkit-appearance: none; appearance: none; text-align: center; }
+        .time-row select { flex: 1; min-width: 0; padding: 14px 10px; border: 1.5px solid #ddd; border-radius: 12px; font-size: 1rem; font-family: inherit; outline: none; transition: 0.3s; background: white; color: #222; -webkit-appearance: none; appearance: none; text-align: center; }
         .time-row select:focus { border-color: #c89b5a; box-shadow: 0 0 0 3px rgba(200,155,90,0.15); }
         .time-separator { font-size: 1.4rem; color: #888; flex-shrink: 0; }
-        button {
-            background: #1b2d5b;
-            color: #ffffff;
-            border: none;
-            padding: 20.8px 16px;
-            border-radius: 14px;
-            cursor: pointer;
-            font-size: 1.15rem;
-            font-weight: 700;
-            font-family: inherit;
-            width: 100%;
-            transition: 0.2s;
-            letter-spacing: 0.3px;
-        }
+        button { background: #1b2d5b; color: #ffffff; border: none; padding: 20.8px 16px; border-radius: 14px; cursor: pointer; font-size: 1.15rem; font-weight: 700; font-family: inherit; width: 100%; transition: 0.2s; letter-spacing: 0.3px; }
         button:hover { background: #243a78; transform: translateY(-2px); }
         button:active { transform: translateY(0); }
         #result { margin-top: 2rem; padding-top: 1.8rem; border-top: 1.5px solid #eee; display: none; animation: fadeIn 0.5s ease-in; }
@@ -68,7 +40,17 @@
     <p class="subtitle">Enter your birth date &amp; time to decode your core energy.</p>
 
     <div class="input-label">Birth Date</div>
-    <input type="date" id="birthDate" value="1995-01-01">
+    <div class="date-row">
+        <select id="birthYear"></select>
+        <select id="birthMonth">
+            <option value="">MM</option>
+            <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+            <option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option>
+            <option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option>
+            <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+        </select>
+        <select id="birthDay"></select>
+    </div>
 
     <div class="input-label">Birth Time <span style="color:#bbb; font-weight:400;">(optional)</span></div>
     <div class="time-row">
@@ -105,15 +87,29 @@
 </div>
 
 <script>
+    // 연도 옵션 생성
+    const yearSel = document.getElementById('birthYear');
+    yearSel.innerHTML = '<option value="">YYYY</option>';
+    for (let y = 2010; y >= 1930; y--) {
+        yearSel.innerHTML += `<option value="${y}">${y}</option>`;
+    }
+
+    // 일 옵션 생성
+    const daySel = document.getElementById('birthDay');
+    daySel.innerHTML = '<option value="">DD</option>';
+    for (let d = 1; d <= 31; d++) {
+        daySel.innerHTML += `<option value="${d}">${d}</option>`;
+    }
+
     function calculateEnergy() {
         try {
-            const dateInput = document.getElementById('birthDate').value;
-            if (!dateInput) return alert('Please select your birth date.');
+            const year = parseInt(document.getElementById('birthYear').value);
+            const month = parseInt(document.getElementById('birthMonth').value);
+            const day = parseInt(document.getElementById('birthDay').value);
 
-            const parts = dateInput.split('-');
-            let year = parseInt(parts[0]);
-            let month = parseInt(parts[1]);
-            let day = parseInt(parts[2]);
+            if (!year || !month || !day) return alert('Please select your full birth date.');
+
+            let y = year, m = month, d = day;
 
             const hourVal = document.getElementById('birthHour').value;
             const minVal = document.getElementById('birthMinute').value;
@@ -124,16 +120,16 @@
                 const minute = parseInt(minVal);
                 const totalMinutes = hour * 60 + minute;
                 if (totalMinutes >= 23 * 60 + 30) {
-                    const dateObj = new Date(year, month - 1, day);
+                    const dateObj = new Date(y, m - 1, d);
                     dateObj.setDate(dateObj.getDate() + 1);
-                    year = dateObj.getFullYear();
-                    month = dateObj.getMonth() + 1;
-                    day = dateObj.getDate();
+                    y = dateObj.getFullYear();
+                    m = dateObj.getMonth() + 1;
+                    d = dateObj.getDate();
                     shifted = true;
                 }
             }
 
-            const solar = Solar.fromYmd(year, month, day);
+            const solar = Solar.fromYmd(y, m, d);
             const lunar = solar.getLunar();
             const dayGan = lunar.getDayGan();
 
@@ -161,7 +157,7 @@
 
             const noteEl = document.getElementById('shiftedNote');
             if (shifted) {
-                noteEl.innerText = `⏱ Born after 23:30 → calculated as ${year}.${String(month).padStart(2,'0')}.${String(day).padStart(2,'0')}`;
+                noteEl.innerText = `⏱ Born after 23:30 → calculated as ${y}.${String(m).padStart(2,'0')}.${String(d).padStart(2,'0')}`;
                 noteEl.style.display = 'block';
             } else {
                 noteEl.style.display = 'none';
