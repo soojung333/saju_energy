@@ -13,10 +13,10 @@
         h1 { font-size: 2rem; color: #111; margin: 0 0 0.6rem; letter-spacing: -0.5px; font-weight: 700; }
         .subtitle { font-size: 1rem; color: #777; margin-bottom: 1.8rem; line-height: 1.5; }
         .input-label { font-size: 0.95rem; color: #555; text-align: left; margin-bottom: 6px; padding-left: 2px; font-weight: 600; }
-        input[type="date"] { width: 100%; padding: 14px 16px; border: 1.5px solid #ddd; border-radius: 12px; margin-bottom: 1.4rem; font-size: 1.1rem; font-family: inherit; outline: none; transition: 0.3s; color: #222; background: white; }
+        input[type="date"] { display: block; width: 100%; min-width: 0; padding: 14px 16px; border: 1.5px solid #ddd; border-radius: 12px; margin-bottom: 1.4rem; font-size: 1.1rem; font-family: inherit; outline: none; transition: 0.3s; color: #222; background: white; }
         input[type="date"]:focus { border-color: #c89b5a; box-shadow: 0 0 0 3px rgba(200,155,90,0.15); }
         .time-row { display: flex; gap: 10px; margin-bottom: 1.4rem; align-items: center; }
-        .time-row select { flex: 1; padding: 14px 10px; border: 1.5px solid #ddd; border-radius: 12px; font-size: 1.1rem; font-family: inherit; outline: none; transition: 0.3s; background: white; color: #222; -webkit-appearance: none; appearance: none; text-align: center; }
+        .time-row select { flex: 1; min-width: 0; padding: 14px 10px; border: 1.5px solid #ddd; border-radius: 12px; font-size: 1.1rem; font-family: inherit; outline: none; transition: 0.3s; background: white; color: #222; -webkit-appearance: none; appearance: none; text-align: center; }
         .time-row select:focus { border-color: #c89b5a; box-shadow: 0 0 0 3px rgba(200,155,90,0.15); }
         .time-separator { font-size: 1.4rem; color: #888; flex-shrink: 0; }
         button {
@@ -48,8 +48,8 @@
 </head>
 <body>
 <div class="container">
-    <h1>Find Your Day Master 💫</h1>
-    <p class="subtitle">Enter your birth date & time to decode your core energy.</p>
+    <h1>Your Soul Energy 💫</h1>
+    <p class="subtitle">Enter your birth date &amp; time to decode your Daymaster.</p>
 
     <div class="input-label">Birth Date</div>
     <input type="date" id="birthDate" value="1995-01-01">
