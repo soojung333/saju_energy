@@ -8,34 +8,85 @@
     <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
     <style>
         body { font-family: 'Cormorant Garamond', serif; background-color: #0d1b2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { background: white; padding: 2.5rem; border-radius: 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 90%; max-width: 380px; text-align: center; }
-        h1 { font-size: 1.6rem; color: #222; margin-bottom: 1.5rem; letter-spacing: -0.5px; }
-        .input-label { font-size: 0.8rem; color: #aaa; text-align: left; margin-bottom: 4px; padding-left: 4px; }
-        input { width: 90%; padding: 12px; border: 1px solid #eee; border-radius: 10px; margin-bottom: 1.2rem; font-size: 1rem; outline: none; transition: 0.3s; }
-        input:focus { border-color: #d4a373; }
-        .time-row { display: flex; gap: 10px; margin-bottom: 1.2rem; }
-        .time-row select { flex: 1; padding: 12px 8px; border: 1px solid #eee; border-radius: 12px; font-size: 1rem; outline: none; transition: 0.3s; background: white; color: #333; appearance: none; text-align: center; }
-        .time-row select:focus { border-color: #d4a373; }
-        .time-separator { display: flex; align-items: center; font-size: 1.2rem; color: #aaa; padding-bottom: 0; }
-        button { background: #222; color: white; border: none; padding: 14px 28px; border-radius: 12px; cursor: pointer; font-size: 1rem; font-weight: 600; width: 100%; transition: 0.3s; }
-        button:hover { background: #444; transform: translateY(-2px); }
-        #result { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: none; animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .energy-tag { font-size: 1.4rem; font-weight: bold; color: #b07d4a; margin-bottom: 0.5rem; }
-        .description { font-size: 1.1rem; color: #666; line-height: 1.8; }
-        .shifted-note { font-size: 0.9rem; color: #c0a080; margin-top: 0.4rem; margin-bottom: 0.2rem; }
+        .container { background: white; padding: 2.5rem; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); width: 90%; max-width: 380px; text-align: center; box-sizing: border-box; }
+        
+        h1 { font-size: 2.2rem; color: #000; margin-bottom: 1.2rem; letter-spacing: -0.5px; font-weight: 700; }
+        .sub-header-p { font-size: 1.1rem; color: #222; margin-bottom: 1.5rem; font-weight: 500; }
+
+        .input-label { font-size: 1.1rem; color: #000; text-align: left; margin-bottom: 6px; padding-left: 4px; font-weight: 700; }
+        
+        /* Birth Date 칸: 높이, 폰트, 너비 최적화 */
+        #birthDate { 
+            width: 100%; 
+            height: 54px; 
+            padding: 0 14px; 
+            border: 2px solid #555; 
+            border-radius: 12px; 
+            margin-bottom: 1.2rem; 
+            font-size: 1.2rem; 
+            outline: none; 
+            color: #000; 
+            font-weight: 600;
+            font-family: 'Cormorant Garamond', serif; 
+            box-sizing: border-box; 
+        }
+
+        .time-row { display: flex; gap: 10px; margin-bottom: 1.2rem; align-items: center; }
+        
+        /* Birth Time 칸: Date 칸과 스타일 완벽 통일 */
+        .time-row select { 
+            flex: 1; 
+            height: 54px; 
+            padding: 0 8px; 
+            border: 2px solid #555; 
+            border-radius: 12px; 
+            font-size: 1.1rem; 
+            outline: none; 
+            background: white; 
+            color: #000; 
+            text-align: center; 
+            font-weight: 600; 
+            font-family: 'Cormorant Garamond', serif; 
+            box-sizing: border-box;
+        }
+        
+        .time-separator { font-size: 1.6rem; color: #000; font-weight: bold; line-height: 54px; }
+        
+        /* 버튼: 높이 및 폰트 통일 */
+        button { 
+            background: #000; 
+            color: white; 
+            border: none; 
+            height: 54px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 1.3rem; 
+            font-weight: 700; 
+            width: 100%; 
+            transition: 0.3s; 
+            font-family: 'Cormorant Garamond', serif; 
+        }
+        button:hover { background: #333; }
+
+        #result { margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid #ddd; display: none; }
+
+        .energy-tag { font-size: 2.4rem; font-weight: 800; color: #8e5d2a; margin-bottom: 0.8rem; }
+        .description { font-size: 1.2rem; color: #000; line-height: 1.6; font-weight: 600; }
+        .shifted-note { font-size: 1rem; color: #b07d4a; margin-top: 0.5rem; font-weight: 700; }
+        
+        .footer-info { font-size: 1rem; color: #333; margin: 0; line-height: 1.5; font-weight: 500; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Your Soul Energy 💫 </h1>
-    <p style="font-size: 0.85rem; color: #999; margin-bottom: 1.5rem;">Enter your birth date &amp; time to decode your Daymaster.</p>
+    <p class="sub-header-p">Enter your birth date &amp; time to decode your Daymaster.</p>
 
     <div class="input-label">Birth Date</div>
     <input type="date" id="birthDate" value="1995-01-01">
 
-    <div class="input-label">Birth Time <span style="color:#ccc;">(optional)</span></div>
+    <div class="input-label">Birth Time <span style="color:#444; font-weight:400;">(optional)</span></div>
     <div class="time-row">
         <select id="birthHour">
             <option value="">Hour</option>
@@ -59,12 +110,12 @@
     <button onclick="calculateEnergy()">Decode My Energy</button>
 
     <div id="result">
-        <div class="description">Your Core Identity:</div>
+        <div class="description" style="margin-bottom: 5px;">Your Core Identity:</div>
         <div id="daymasterName" class="energy-tag"></div>
         <div id="shiftedNote" class="shifted-note"></div>
         <div id="energyMotto" class="description"></div>
-        <div style="margin-top: 1.5rem; background: #fafafa; padding: 1rem; border-radius: 10px;">
-            <p style="font-size: 0.8rem; color: #888; margin: 0;">🧐Curious about what this means?<br><b>Follow for daily energy tips</b> and insights!😊</p>
+        <div style="margin-top: 1.5rem; background: #f0f0f0; padding: 1.2rem; border-radius: 12px; border: 1px solid #ccc;">
+            <p class="footer-info">🧐 <b>Curious about what this means?</b><br>Follow for daily energy tips! 😊</p>
         </div>
     </div>
 </div>
@@ -90,6 +141,7 @@
                 const minute = parseInt(minVal);
                 const totalMinutes = hour * 60 + minute;
 
+                // 야자시 처리 (23:30 이후 다음날로 계산)
                 if (totalMinutes >= 23 * 60 + 30) {
                     const dateObj = new Date(year, month - 1, day);
                     dateObj.setDate(dateObj.getDate() + 1);
@@ -100,6 +152,7 @@
                 }
             }
 
+            // 라이브러리 함수 호출
             const solar = Solar.fromYmd(year, month, day);
             const lunar = solar.getLunar();
             const dayGan = lunar.getDayGan();
@@ -128,7 +181,7 @@
 
             const noteEl = document.getElementById('shiftedNote');
             if (shifted) {
-                noteEl.innerText = `⏱ Born after 23:30 → calculated as ${year}.${String(month).padStart(2,'0')}.${String(day).padStart(2,'0')}`;
+                noteEl.innerText = `⏱ Born after 23:30 → Calculated as ${year}.${String(month).padStart(2,'0')}.${String(day).padStart(2,'0')}`;
             } else {
                 noteEl.innerText = '';
             }
@@ -137,7 +190,7 @@
 
         } catch (e) {
             console.error(e);
-            alert("Something went wrong. Please try again!");
+            alert("Something went wrong. Please check your date and time.");
         }
     }
 </script>
