@@ -7,50 +7,51 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
     <style>
+        /* 기본 배경과 레이아웃은 유지하되 텍스트 가시성만 강화 */
         body { font-family: 'Cormorant Garamond', serif; background-color: #0d1b2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { background: white; padding: 2.5rem; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 90%; max-width: 380px; text-align: center; }
+        .container { background: white; padding: 2.5rem; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); width: 90%; max-width: 380px; text-align: center; }
         
-        /* 제목 및 설명 폰트 키우고 색상 진하게 */
-        h1 { font-size: 2.2rem; color: #000; margin-bottom: 1.5rem; letter-spacing: -0.5px; font-weight: 700; }
-        .sub-text { font-size: 1.1rem; color: #444; margin-bottom: 1.5rem; font-weight: 500; }
+        /* 1. 제목 및 설명: 크기 키우고 완전 검정(#000)으로 변경 */
+        h1 { font-size: 2.2rem; color: #000; margin-bottom: 1.2rem; letter-spacing: -0.5px; font-weight: 700; }
+        .sub-header-p { font-size: 1.1rem; color: #222; margin-bottom: 1.5rem; font-weight: 500; }
 
-        /* 레이블 및 입력창 폰트 확대 */
+        /* 2. 입력 레이블: 더 진하고 두껍게 */
         .input-label { font-size: 1.1rem; color: #000; text-align: left; margin-bottom: 6px; padding-left: 4px; font-weight: 700; }
-        input { width: 90%; padding: 14px; border: 2px solid #ccc; border-radius: 12px; margin-bottom: 1.2rem; font-size: 1.2rem; outline: none; transition: 0.3s; color: #000; }
+        
+        /* 3. 입력창: 글자 크기 키우고 테두리 진하게 */
+        input { width: 90%; padding: 14px; border: 2px solid #555; border-radius: 12px; margin-bottom: 1.2rem; font-size: 1.2rem; outline: none; transition: 0.3s; color: #000; font-weight: 600; }
         input:focus { border-color: #d4a373; }
-
+        
         .time-row { display: flex; gap: 10px; margin-bottom: 1.2rem; }
-        .time-row select { flex: 1; padding: 14px 8px; border: 2px solid #ccc; border-radius: 12px; font-size: 1.1rem; outline: none; transition: 0.3s; background: white; color: #000; appearance: none; text-align: center; font-weight: 600; }
-        .time-row select:focus { border-color: #d4a373; }
+        .time-row select { flex: 1; padding: 14px 8px; border: 2px solid #555; border-radius: 12px; font-size: 1.1rem; outline: none; transition: 0.3s; background: white; color: #000; appearance: none; text-align: center; font-weight: 600; }
         
-        .time-separator { display: flex; align-items: center; font-size: 1.5rem; color: #000; padding-bottom: 0; font-weight: bold; }
+        .time-separator { display: flex; align-items: center; font-size: 1.6rem; color: #000; font-weight: bold; }
         
-        /* 버튼 텍스트 키움 */
-        button { background: #222; color: white; border: none; padding: 16px 28px; border-radius: 12px; cursor: pointer; font-size: 1.3rem; font-weight: 700; width: 100%; transition: 0.3s; }
-        button:hover { background: #444; transform: translateY(-2px); }
+        /* 4. 버튼: 텍스트 크게 */
+        button { background: #000; color: white; border: none; padding: 16px 28px; border-radius: 12px; cursor: pointer; font-size: 1.3rem; font-weight: 700; width: 100%; transition: 0.3s; }
+        button:hover { background: #333; transform: translateY(-2px); }
 
-        #result { margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid #eee; display: none; animation: fadeIn 0.5s ease-in; }
+        #result { margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid #ddd; display: none; animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* 결과 부분 폰트 대폭 확대 및 색상 강화 */
-        .energy-tag { font-size: 2.2rem; font-weight: 800; color: #8e5d2a; margin-bottom: 0.5rem; }
-        .description { font-size: 1.2rem; color: #111; line-height: 1.6; font-weight: 500; }
-        .shifted-note { font-size: 1rem; color: #b07d4a; margin-top: 0.4rem; margin-bottom: 0.2rem; font-weight: 600; }
+        /* 5. 결과 값: 아주 크고 명확한 색상으로 변경 */
+        .energy-tag { font-size: 2.4rem; font-weight: 800; color: #8e5d2a; margin-bottom: 0.8rem; }
+        .description { font-size: 1.2rem; color: #000; line-height: 1.6; font-weight: 600; }
+        .shifted-note { font-size: 1rem; color: #b07d4a; margin-top: 0.5rem; font-weight: 700; }
         
-        /* 하단 안내 문구 가독성 수정 */
-        .footer-note { font-size: 1rem; color: #333; margin: 0; line-height: 1.4; }
+        .footer-info { font-size: 1rem; color: #333; margin: 0; line-height: 1.5; font-weight: 500; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Your Soul Energy 💫 </h1>
-    <p class="sub-text">Enter your birth date &amp; time to decode your Daymaster.</p>
+    <p class="sub-header-p">Enter your birth date &amp; time to decode your Daymaster.</p>
 
     <div class="input-label">Birth Date</div>
     <input type="date" id="birthDate" value="1995-01-01">
 
-    <div class="input-label">Birth Time <span style="color:#555; font-weight:400;">(optional)</span></div>
+    <div class="input-label">Birth Time <span style="color:#444; font-weight:400;">(optional)</span></div>
     <div class="time-row">
         <select id="birthHour">
             <option value="">Hour</option>
@@ -74,88 +75,4 @@
     <button onclick="calculateEnergy()">Decode My Energy</button>
 
     <div id="result">
-        <div class="description">Your Core Identity:</div>
-        <div id="daymasterName" class="energy-tag"></div>
-        <div id="shiftedNote" class="shifted-note"></div>
-        <div id="energyMotto" class="description"></div>
-        <div style="margin-top: 1.5rem; background: #f9f9f9; padding: 1rem; border-radius: 10px; border: 1px solid #ddd;">
-            <p class="footer-note">🧐 <b>Curious about what this means?</b><br>Follow for daily energy tips and insights! 😊</p>
-        </div>
-    </div>
-</div>
-
-<script>
-    function calculateEnergy() {
-        try {
-            const dateInput = document.getElementById('birthDate').value;
-            if (!dateInput) return alert('Please select your birth date.');
-
-            const parts = dateInput.split('-');
-            let year = parseInt(parts[0]);
-            let month = parseInt(parts[1]);
-            let day = parseInt(parts[2]);
-
-            const hourVal = document.getElementById('birthHour').value;
-            const minVal = document.getElementById('birthMinute').value;
-
-            let shifted = false;
-
-            if (hourVal !== '' && minVal !== '') {
-                const hour = parseInt(hourVal);
-                const minute = parseInt(minVal);
-                const totalMinutes = hour * 60 + minute;
-
-                if (totalMinutes >= 23 * 60 + 30) {
-                    const dateObj = new Date(year, month - 1, day);
-                    dateObj.setDate(dateObj.getDate() + 1);
-                    year = dateObj.getFullYear();
-                    month = dateObj.getMonth() + 1;
-                    day = dateObj.getDate();
-                    shifted = true;
-                }
-            }
-
-            const solar = Solar.fromYmd(year, month, day);
-            const lunar = solar.getLunar();
-            const dayGan = lunar.getDayGan();
-
-            const TRANSLATION = {
-                '甲': 'Yang Wood 🌲', '乙': 'Yin Wood 🌱',
-                '丙': 'Yang Fire 🔥', '丁': 'Yin Fire 🕯️',
-                '戊': 'Yang Earth ⛰️', '己': 'Yin Earth 🪴',
-                '庚': 'Yang Metal 🪨', '辛': 'Yin Metal 💎',
-                '壬': 'Yang Water 🌊', '癸': 'Yin Water 💧'
-            };
-
-            const MOTTOS = {
-                'Wood': 'Growth, Creativity, and Infinite Potential.',
-                'Fire': 'Passion, Transformation, and Radiance.',
-                'Earth': 'Stability, Grounding, and Nurturing.',
-                'Metal': 'Precision, Resilience, and Clarity.',
-                'Water': 'Wisdom, Flow, and Intuition.'
-            };
-
-            const resultName = TRANSLATION[dayGan];
-            const element = resultName.split(' ')[1];
-
-            document.getElementById('daymasterName').innerText = resultName;
-            document.getElementById('energyMotto').innerText = MOTTOS[element];
-
-            const noteEl = document.getElementById('shiftedNote');
-            if (shifted) {
-                noteEl.innerText = `⏱ Born after 23:30 → calculated as ${year}.${String(month).padStart(2,'0')}.${String(day).padStart(2,'0')}`;
-            } else {
-                noteEl.innerText = '';
-            }
-
-            document.getElementById('result').style.display = 'block';
-
-        } catch (e) {
-            console.error(e);
-            alert("Something went wrong. Please try again!");
-        }
-    }
-</script>
-
-</body>
-</html>
+        <div class="description" style="
